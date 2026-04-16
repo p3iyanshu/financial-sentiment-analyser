@@ -76,18 +76,24 @@ streamlit run src/dashboard.py
 ```
 
 ## Project Structure
+
+```
 financial-sentiment-analyser/
+│
 ├── data/
 │   ├── news_raw.csv
 │   ├── news_sentiment.csv
 │   ├── stock_prices.csv
 │   ├── merged_data.csv
 │   └── charts/
+│
 ├── src/
 │   ├── scraper.py
 │   ├── sentiment.py
 │   ├── analysis.py
 │   ├── ml_model.py
 │   └── dashboard.py
+│
 ├── requirements.txt
 └── README.md
+```
