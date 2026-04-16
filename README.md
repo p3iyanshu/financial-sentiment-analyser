@@ -1,45 +1,93 @@
-# Financial News Sentiment → Market Impact Analyser
+# Financial News Sentiment Analyser
 
-Analyses how financial news sentiment correlates with stock price movements using NLP and Machine Learning.
+A data science project I built during my semester break to understand 
+whether financial news sentiment has any relationship with stock price 
+movements.
 
-## What it does
-- Scrapes financial news headlines using NewsAPI
-- Scores sentiment using FinBERT (finance-specific BERT model)
-- Fetches real stock price data using yfinance
-- Performs correlation analysis between sentiment and price moves
-- Trains a Random Forest classifier to predict price direction
-- Explains predictions using SHAP values
-- Visualises everything in an interactive Streamlit dashboard
+## The Idea
 
-## Key findings
-- Tesla showed 0.72 sentiment-price correlation
-- Apple showed 0.29 sentiment-price correlation
-- Microsoft showed -0.67 (inverse) correlation
-- Neutral news dominates (52%) vs positive (23%) and negative (24%)
+I always wondered if the tone of news around a company (positive, 
+negative, neutral) has any effect on how its stock performs that day. 
+This project is my attempt to actually test that using real data.
 
-## Tech stack
-- Python, Pandas, NumPy
-- FinBERT (HuggingFace Transformers)
-- Scikit-learn (Random Forest)
-- SHAP (model explainability)
-- Plotly + Streamlit (dashboard)
-- NewsAPI + yfinance (data sources)
+## What I Did
 
-## How to run
+- Collected 30 days of news headlines for Apple, Tesla and Microsoft 
+  using NewsAPI
+- Used FinBERT (a BERT model trained specifically on financial text) 
+  to classify each headline as positive, negative or neutral
+- Pulled actual stock price data using yfinance
+- Analysed the correlation between daily sentiment and price changes
+- Trained a Random Forest model to predict if the stock price would 
+  go up or down based on that day's news sentiment
+- Added SHAP values to understand which features the model relied on
+- Built a Streamlit dashboard to visualise everything interactively
+
+## Results
+
+| Company   | Sentiment-Price Correlation |
+|-----------|-----------------------------|
+| Tesla     | +0.72 (strong)              |
+| Apple     | +0.29 (moderate)            |
+| Microsoft | -0.67 (inverse)             |
+
+Tesla showed the strongest signal which was surprising. Microsoft 
+being negative was interesting — positive news about Microsoft often 
+came on days prices dipped, possibly because good news was already 
+priced in.
+
+## What I Learned
+
+- How to work with real APIs (NewsAPI, yfinance)
+- How transformer models like BERT work for text classification
+- Difference between correlation and causation (the model accuracy 
+  is low because 30 days of data is not enough to generalise)
+- How SHAP helps explain what a black-box model is actually doing
+- End-to-end project structure — from raw data to deployed dashboard
+
+## Honest Limitations
+
+The ML model accuracy is not great — only 3 test samples because 
+the dataset is small. This was my first time working with 
+transformers so the pipeline is basic. Given more data (1-2 years) 
+and more companies, the results would be more meaningful.
+
+## Tech Used
+
+Python · Pandas · HuggingFace Transformers · Scikit-learn · 
+SHAP · Plotly · Streamlit · NewsAPI · yfinance
+
+## How to Run
+
+```bash
+git clone https://github.com/p3iyanshu/financial-sentiment-analyser
+cd financial-sentiment-analyser
 pip install -r requirements.txt
+```
+
+Add your NewsAPI key in src/scraper.py at line 6, then run:
+
+```bash
 python src/scraper.py
 python src/sentiment.py
 python src/analysis.py
 python src/ml_model.py
 streamlit run src/dashboard.py
+```
 
-## Project structure
+## Project Structure
 financial-sentiment-analyser/
-├── data/              # CSV files and charts
+├── data/
+│   ├── news_raw.csv
+│   ├── news_sentiment.csv
+│   ├── stock_prices.csv
+│   ├── merged_data.csv
+│   └── charts/
 ├── src/
-│   ├── scraper.py     # News + stock data collection
-│   ├── sentiment.py   # FinBERT sentiment scoring
-│   ├── analysis.py    # EDA + correlation analysis
-│   ├── ml_model.py    # Random Forest + SHAP
-│   └── dashboard.py   # Streamlit dashboard
+│   ├── scraper.py
+│   ├── sentiment.py
+│   ├── analysis.py
+│   ├── ml_model.py
+│   └── dashboard.py
+├── requirements.txt
 └── README.md
